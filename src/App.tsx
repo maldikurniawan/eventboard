@@ -1,8 +1,7 @@
+import { NotFound } from "@/components";
+import { EventAttendanceList, FormAttendance, QRCode } from "@/pages";
 import { Fragment } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import EventAttendanceList from "./pages/EventAttendanceList";
-import FormAttendance from "./pages/FormAttendance";
-import QRCode from "./pages/QRCode";
 
 const App = () => {
   return (
@@ -12,6 +11,7 @@ const App = () => {
           <Route path="/" element={<QRCode />} />
           <Route path="/form" element={<FormAttendance />} />
           <Route path="/event" element={<EventAttendanceList />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </Fragment>

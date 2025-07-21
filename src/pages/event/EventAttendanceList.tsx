@@ -10,6 +10,7 @@ import {
 } from "@/components";
 import { useState } from "react";
 import { TbDotsVertical, TbEye, TbTrash } from "react-icons/tb";
+import { Link } from "react-router-dom";
 
 const EventAttendanceList = () => {
     const [limit, setLimit] = useState(10);
@@ -85,9 +86,9 @@ const EventAttendanceList = () => {
                 <div className="p-10">
                     {/* Control Top */}
                     <div className="flex items-center mb-4">
-                        <div className="text-xl font-bold text-center">
+                        <Link to={"/form"} className="text-xl font-bold text-center">
                             Event Attendance List
-                        </div>
+                        </Link>
                     </div>
                     <div className="mb-4 flex flex-col sm:flex-row justify-center sm:justify-between items-center gap-4">
                         <div className="w-full sm:w-60">

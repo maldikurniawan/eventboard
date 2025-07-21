@@ -2,6 +2,7 @@ import { Button, Circle, TextField } from "@/components";
 import { useFormik } from "formik";
 import { useState } from "react";
 import { TbLoader2 } from "react-icons/tb";
+import { Link } from "react-router-dom";
 import * as Yup from "yup";
 
 const FormAttendance: React.FC = () => {
@@ -32,9 +33,9 @@ const FormAttendance: React.FC = () => {
                 <div className="flex w-full items-center justify-center p-10">
                     <div className="w-full md:w-96 h-fit p-10 bg-white rounded-md backdrop-blur-lg shadow-xl">
                         <div className="flex items-center mb-4">
-                            <div className="text-xl font-bold text-center">
+                            <Link to={"/event"} className="text-xl font-bold text-center">
                                 Form Attendance
-                            </div>
+                            </Link>
                         </div>
                         <form onSubmit={formik.handleSubmit} className="space-y-4 text-[#]">
                             <TextField
