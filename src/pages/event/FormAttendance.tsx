@@ -1,12 +1,17 @@
+import { usePostData } from "@/actions";
 import { Button, Circle, TextField } from "@/components";
+import { API_URL_event } from "@/constants";
+import { showToast } from "@/utils/showToast";
 import { useFormik } from "formik";
 import { useState } from "react";
 import { TbLoader2 } from "react-icons/tb";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
 const FormAttendance: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
+    const createEventAttendance = usePostData(API_URL_event, true);
+    const navigate = useNavigate();
 
     const formik = useFormik({
         initialValues: {
@@ -16,13 +21,36 @@ const FormAttendance: React.FC = () => {
             nama_perusahaan: "",
         },
         validationSchema: Yup.object({
-            nama: Yup.string().required("Required"),
-            nohp: Yup.string().required("Required"),
-            email: Yup.string().required("Required"),
-            nama_perusahaan: Yup.string().required("Required"),
+            nama: Yup.string().required("Nama wajib diisi"),
+            nohp: Yup.string()
+                .required("Nomor HP wajib diisi")
+                .matches(
+                    /^\+?\d{9,15}$/,
+                    "Nomor HP tidak valid."
+                ),
+            email: Yup.string()
+                .required("Email wajib diisi")
+                .email("Format email tidak valid"),
+
+            nama_perusahaan: Yup.string().required("Nama perusahaan wajib diisi"),
         }),
-        onSubmit: () => {
+        onSubmit: (values, { resetForm }) => {
             setLoading(true);
+            createEventAttendance.mutate(values as any, {
+                onSuccess: (res: any) => {
+                    const data = res as { message: string };
+                    resetForm();
+                    setLoading(false);
+                    navigate("/event");
+                    showToast(data.message, "success", 3000);
+                },
+                onError: (error) => {
+                    console.error(error);
+                    showToast("An error occurred while submitting the form.", "error", 3000);
+                    resetForm();
+                    setLoading(false);
+                },
+            });
         },
     });
 
@@ -57,7 +85,7 @@ const FormAttendance: React.FC = () => {
                                 name="nohp"
                                 type="text"
                                 placeholder="No. HP"
-                                color="#"
+                                color="#000000"
                                 variant="outline"
                                 value={formik.values.nohp}
                                 onChange={formik.handleChange}
@@ -70,7 +98,7 @@ const FormAttendance: React.FC = () => {
                                 name="email"
                                 type="text"
                                 placeholder="Email"
-                                color="#"
+                                color="#000000"
                                 variant="outline"
                                 value={formik.values.email}
                                 onChange={formik.handleChange}
@@ -83,7 +111,7 @@ const FormAttendance: React.FC = () => {
                                 name="nama_perusahaan"
                                 type="text"
                                 placeholder="Nama Perusahaan"
-                                color="#"
+                                color="#000000"
                                 variant="outline"
                                 value={formik.values.nama_perusahaan}
                                 onChange={formik.handleChange}
@@ -101,7 +129,7 @@ const FormAttendance: React.FC = () => {
                                         {loading ? (
                                             <TbLoader2 size={20} className="animate-spin mx-auto" />
                                         ) : (
-                                            "Login"
+                                            "Submit"
                                         )}
                                     </div>
                                 </Button>

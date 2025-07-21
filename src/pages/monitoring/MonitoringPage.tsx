@@ -1,15 +1,17 @@
 import { useGetData } from "@/actions";
 import {
-    Button,
+    ButtonRipple,
     Card,
     Circle,
     Limit,
     Pagination,
     Tables,
-    TextField
+    TextField,
+    Tooltip
 } from "@/components";
 import { API_URL_event } from "@/constants";
 import { useEffect, useState } from "react";
+import { TbEye } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { useDebounceValue } from 'usehooks-ts';
 
@@ -21,7 +23,7 @@ interface EventAttendanceInterface {
 }
 
 
-const EventAttendanceList = () => {
+const MonitoringPage = () => {
     const [queryParams, setQueryParams] = useState({
         limit: 10,
         offset: 0,
@@ -32,7 +34,7 @@ const EventAttendanceList = () => {
 
     const getEventAttendance = useGetData(
         API_URL_event,
-        ["event", queryParams],
+        ["monitoring", queryParams],
         true,
         {
             limit: queryParams.limit.toString(),
@@ -91,13 +93,6 @@ const EventAttendanceList = () => {
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
                         </div>
-                        <Button
-                            color="#000000"
-                            variant="outline"
-                            onClick={getEventAttendance.refetch}
-                        >
-                            Refresh
-                        </Button>
                     </div>
 
                     {/* Tables */}
@@ -108,6 +103,8 @@ const EventAttendanceList = () => {
                                 <Tables.Header>No. HP</Tables.Header>
                                 <Tables.Header>Email</Tables.Header>
                                 <Tables.Header>Nama Perusahaan</Tables.Header>
+                                <Tables.Header>IP</Tables.Header>
+                                <Tables.Header center>Action</Tables.Header>
                             </Tables.Row>
                         </Tables.Head>
                         <Tables.Body>
@@ -122,11 +119,24 @@ const EventAttendanceList = () => {
                                         <Tables.Data>{item.nohp}</Tables.Data>
                                         <Tables.Data>{item.email}</Tables.Data>
                                         <Tables.Data>{item.nama_perusahaan}</Tables.Data>
+                                        <Tables.Data>-</Tables.Data>
+                                        <Tables.Data center>
+                                            <div className="flex items-center justify-center">
+                                                <Tooltip tooltip="Lihat">
+                                                    <ButtonRipple
+                                                        stopPropagation
+                                                        className="p-2 rounded-full transition-[background] hover:bg-white/10"
+                                                    >
+                                                        <TbEye className="text-xl text-blue-400" />
+                                                    </ButtonRipple>
+                                                </Tooltip>
+                                            </div>
+                                        </Tables.Data>
                                     </Tables.Row>
                                 ))
                             ) : (
                                 <Tables.Row>
-                                    <Tables.Data colspan={4} center>No Data</Tables.Data>
+                                    <Tables.Data colspan={6} center>No Data</Tables.Data>
                                 </Tables.Row>
                             )}
 
@@ -156,4 +166,4 @@ const EventAttendanceList = () => {
     );
 };
 
-export default EventAttendanceList;
+export default MonitoringPage;

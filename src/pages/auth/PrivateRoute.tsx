@@ -1,8 +1,17 @@
+import type { ReactNode } from "react";
+import { Navigate } from "react-router-dom";
 
-const PrivateRoute = () => {
-    return (
-        <div>PrivateRoute</div>
-    )
-}
+type PrivateRouteProps = {
+    children: ReactNode;
+};
 
-export default PrivateRoute
+const PrivateRoute = ({ children }: PrivateRouteProps) => {
+    const access = localStorage.getItem("naruto");
+    if (access) {
+        return <>{children}</>;
+    } else {
+        return <Navigate to="/login" replace />;
+    }
+};
+
+export default PrivateRoute;

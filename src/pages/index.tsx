@@ -1,9 +1,12 @@
+import LoginPage from "./auth/LoginPage";
+import DashboardPage from "./dashboard/DashboardPage";
 import EventAttendanceList from "./event/EventAttendanceList";
 import FormAttendance from "./event/FormAttendance";
 import QRCode from "./event/QRCode";
 
 export {
-    EventAttendanceList,
-    FormAttendance,
+    DashboardPage, EventAttendanceList,
+    FormAttendance, LoginPage,
     QRCode
 };
+
