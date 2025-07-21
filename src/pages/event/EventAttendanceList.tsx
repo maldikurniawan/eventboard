@@ -94,6 +94,7 @@ const EventAttendanceList = () => {
                         <Button
                             color="#000000"
                             variant="outline"
+                            className="cursor-pointer"
                             onClick={getEventAttendance.refetch}
                         >
                             Refresh

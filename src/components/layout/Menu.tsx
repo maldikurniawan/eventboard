@@ -67,7 +67,7 @@ const Menu: React.FC<MenuProps> = ({ sideOpen }) => {
                     return (
                         <div
                             key={itemIdx}
-                            className={`px-3 mt-6 mb-3 m-3 text-xs text-[#0F0] whitespace-nowrap h-3 transition-opacity duration-300 ${sideOpen ? "opacity-100" : "opacity-0"}`}
+                            className={`px-3 mt-6 mb-3 m-3 text-xs text-white whitespace-nowrap h-3 transition-opacity duration-300 ${sideOpen ? "opacity-100" : "opacity-0"}`}
                         >
                             {item.label}
                         </div>
@@ -80,9 +80,9 @@ const Menu: React.FC<MenuProps> = ({ sideOpen }) => {
                             {({ isActive }) => (
                                 <div className="mb-1 px-3 w-full text-sm">
                                     <div
-                                        className={`flex items-center text-[#0F0] justify-between w-full h-10 px-[18px] py-2 overflow-hidden transition-opacity duration-300 ${sideOpen ? "opacity-100" : "opacity-0"} ${isActive
-                                            ? "bg-[#0F0] text-black"
-                                            : "hover:bg-[#0F0] hover:text-black"
+                                        className={`flex items-center text-white justify-between rounded-xl w-full h-10 px-[18px] py-2 overflow-hidden transition-opacity duration-300 ${sideOpen ? "opacity-100" : "opacity-0"} ${isActive
+                                            ? "bg-[#1A1A1A] text-white"
+                                            : "hover:bg-[#1A1A1A] hover:text-white"
                                             }`}
                                     >
                                         <span className="flex items-center gap-2">
@@ -108,11 +108,11 @@ const Menu: React.FC<MenuProps> = ({ sideOpen }) => {
                                 className="w-full px-3 mb-1 text-sm"
                             >
                                 <div
-                                    className={`flex items-center text-[#0F0] justify-between w-full h-10 px-[18px] py-2 overflow-hidden transition-opacity duration-300 ${sideOpen ? "opacity-100" : "opacity-0"} ${nav[typeof item.name === "string" ? item.name : ""]
-                                        ? "bg-[#0F0] text-black"
-                                        : "hover:bg-[#0F0] hover:text-black"
+                                    className={`flex items-center text-white justify-between rounded-xl w-full h-10 px-[18px] py-2 overflow-hidden transition-opacity duration-300 ${sideOpen ? "opacity-100" : "opacity-0"} ${nav[typeof item.name === "string" ? item.name : ""]
+                                        ? "bg-[#1A1A1A] text-white"
+                                        : "hover:bg-[#1A1A1A] hover:text-white"
                                         } ${pathname.split("/")[2] === item.name
-                                            ? "bg-[#0F0] text-black"
+                                            ? "bg-[#1A1A1A] text-white"
                                             : ""
                                         }`}
                                 >
@@ -151,9 +151,9 @@ const Menu: React.FC<MenuProps> = ({ sideOpen }) => {
                                             >
                                                 {({ isActive }) => (
                                                     <div
-                                                        className={`flex items-center text-[#0F0] justify-between w-full h-10 px-[18px] py-2 overflow-hidden transition-opacity duration-300 ${sideOpen ? "opacity-100" : "opacity-0"} ${isActive
-                                                            ? "bg-[#0F0] text-black"
-                                                            : "hover:bg-[#0F0] hover:text-black"
+                                                        className={`flex items-center text-white justify-between rounded-xl w-full h-10 px-[18px] py-2 overflow-hidden transition-opacity duration-300 ${sideOpen ? "opacity-100" : "opacity-0"} ${isActive
+                                                            ? "bg-[#1A1A1A] text-white"
+                                                            : "hover:bg-[#1A1A1A] hover:text-white"
                                                             }`}
                                                     >
                                                         <span className="flex items-center gap-1">

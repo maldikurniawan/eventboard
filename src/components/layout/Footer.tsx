@@ -4,9 +4,9 @@ const Footer = () => {
     const currentYear = new Date().getFullYear();
 
     return (
-        <div className="flex gap-1 items-center p-6 text-xs text-[#0F0] bg-black">
+        <div className="flex gap-1 items-center p-6 text-xs text-white bg-[#1A1A1A]">
             Copyright <FaRegCopyright /> {currentYear}
-            <span>Anonymous.</span>
+            <span>EventBoard.</span>
             All rights reserved.
         </div>
     )

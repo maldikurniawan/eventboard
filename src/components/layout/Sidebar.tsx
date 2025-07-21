@@ -12,7 +12,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sideOpen, setSideOpen }) => {
 
     return (
         <Fragment>
-            <div className="bg-black">
+            <div className="bg-[#1A1A1A]">
                 <div
                     onClick={() => setSideOpen(!sideOpen)}
                     className={`z-50 fixed w-screen h-screen md:hidden ${sideOpen ? "block" : "hidden"}`}
@@ -20,19 +20,17 @@ const Sidebar: React.FC<SidebarProps> = ({ sideOpen, setSideOpen }) => {
 
                 <div
                     ref={ref}
-                    className={`z-50 fixed md:relative h-screen flex flex-col bg-black border-r border-r-[#0F0] backdrop-blur-xl text-white transition-all duration-300 ease-in-out ${sideOpen
+                    className={`z-50 fixed md:relative my-4 ml-4 flex flex-col bg-[#333333] rounded-xl h-[calc(100vh-2rem)] border-r-2 border-[#1A1A1A] backdrop-blur-xl text-white transition-all duration-300 ease-in-out ${sideOpen
                         ? "w-[16rem] translate-x-0"
                         : "w-0 translate-x-[-100%]"}`
                     }
                 >
-                    <div className={`w-[90%] items-center cursor-pointer gap-1 mx-auto flex border-b-2 leading-[60px] text-left border-[#0F0] ${sideOpen ? "opacity-100" : "opacity-0 pointer-events-none"} transition-opacity duration-300 ease-in-out`}>
-                        {/* <img
-                            src="/images/anonymous.png"
-                            alt="Anonymous"
-                            className="w-10 h-10"
-                        /> */}
+                    <div className={`w-[90%] items-center cursor-pointer gap-1 mx-auto flex border-b-2 leading-[54px] text-left border-[#BEBEBE] ${sideOpen ? "opacity-100" : "opacity-0 pointer-events-none"} transition-opacity duration-300 ease-in-out`}>
+                        <div className="text-xl font-black bg-[#1A1A1A] rounded-full px-2">
+                            E
+                        </div>
                         <span>
-                            Anonymous
+                            EventBoard
                         </span>
                     </div>
 

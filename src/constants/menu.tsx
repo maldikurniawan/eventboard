@@ -1,5 +1,6 @@
 import { DashboardPage } from "@/pages";
 import type { JSX } from "react";
+import { MdEvent } from "react-icons/md";
 import {
     PiHouseLine
 } from "react-icons/pi";
@@ -31,10 +32,18 @@ interface MenuItem {
 export const menu: MenuItem[] = [
     {
         icon: <PiHouseLine />,
-        path: "/dashboard",
-        name: "dashboard",
+        path: "/",
+        name: "chart",
         title: "Dashboard",
         element: <DashboardPage />,
+        sub: [],
+    },
+    {
+        icon: <MdEvent />,
+        path: "/event",
+        name: "event",
+        title: "Event",
+        element: <div>Event Page</div>,
         sub: [],
     },
 ];

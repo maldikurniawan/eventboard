@@ -11,7 +11,7 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route
-            path="/dashboard"
+            path="/"
             element={
               <PrivateRoute>
                 <Layout />
@@ -28,9 +28,9 @@ const App = () => {
               }
             })}
           </Route>
-          <Route path="/" element={<QRCode />} />
+          <Route path="/qrcode" element={<QRCode />} />
           <Route path="/form" element={<FormAttendance />} />
-          <Route path="/event" element={<EventAttendanceList />} />
+          <Route path="/attendance" element={<EventAttendanceList />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

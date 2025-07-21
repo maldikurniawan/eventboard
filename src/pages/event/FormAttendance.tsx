@@ -41,7 +41,7 @@ const FormAttendance: React.FC = () => {
                     const data = res as { message: string };
                     resetForm();
                     setLoading(false);
-                    navigate("/event");
+                    navigate("/attendance");
                     showToast(data.message, "success", 3000);
                 },
                 onError: (error) => {
@@ -59,9 +59,9 @@ const FormAttendance: React.FC = () => {
             <Circle />
             <div className="relative w-screen h-screen overflow-hidden flex font-light">
                 <div className="flex w-full items-center justify-center p-10">
-                    <div className="w-full md:w-96 h-fit p-10 bg-white rounded-md backdrop-blur-lg shadow-xl">
+                    <div className="w-full md:w-96 h-fit p-10 bg-white rounded-xl backdrop-blur-lg shadow-xl">
                         <div className="flex items-center mb-4">
-                            <Link to={"/event"} className="text-xl font-bold text-center">
+                            <Link to={"/attendance"} className="text-xl font-bold text-center">
                                 Form Attendance
                             </Link>
                         </div>
@@ -122,7 +122,7 @@ const FormAttendance: React.FC = () => {
                                 <Button
                                     type="submit"
                                     disabled={loading}
-                                    className="w-full"
+                                    className="w-full cursor-pointer"
                                     color="#000000"
                                 >
                                     <div className="text-white">

@@ -35,7 +35,7 @@ const LoginPage: React.FC = () => {
                 localStorage.setItem("naruto", access);
                 localStorage.setItem("refresh", refresh);
 
-                navigate("/dashboard", { state: { loginSuccess: true } });
+                navigate("/", { state: { loginSuccess: true } });
             } catch (error: any) {
                 showToast("No active account found with the given credentials", "error", 3000);
             } finally {
@@ -50,9 +50,9 @@ const LoginPage: React.FC = () => {
             <Circle />
             <div className="relative w-screen h-screen overflow-hidden flex font-light">
                 <div className="flex w-full items-center justify-center p-10">
-                    <div className="w-full md:w-96 h-fit p-10 bg-white rounded-md backdrop-blur-lg shadow-xl">
+                    <div className="w-full md:w-96 h-fit p-10 bg-white rounded-xl backdrop-blur-lg shadow-xl">
                         <div className="flex items-center mb-4">
-                            <Link to={"/dashboard"} className="text-xl font-bold text-center">
+                            <Link to={"/"} className="text-xl font-bold text-center">
                                 Login
                             </Link>
                         </div>
