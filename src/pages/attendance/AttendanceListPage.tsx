@@ -39,7 +39,7 @@ const AttendanceListPage = () => {
 
     const getEvent = useGetData(
         `${API_URL_event}${slug}/attendance/`,
-        ["attendance", queryParams],
+        [`attendance-${slug}`, queryParams],
         true,
         {
             limit: queryParams.limit.toString(),

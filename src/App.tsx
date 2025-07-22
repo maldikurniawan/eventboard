@@ -1,5 +1,5 @@
 import { Layout, NotFound } from "@/components";
-import { AttendanceListPage, EventAttendanceList, FormAttendance, LoginPage, QRCode } from "@/pages";
+import { AttendanceListPage, CodePage, EventAttendanceList, FormAttendance, LoginPage } from "@/pages";
 import { Fragment } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { menu } from "./constants/menu";
@@ -29,7 +29,7 @@ const App = () => {
             })}
             <Route path="/attendance/list" element={<AttendanceListPage />} />
           </Route>
-          <Route path="/qrcode" element={<QRCode />} />
+          <Route path="/code" element={<CodePage />} />
           <Route path="/form" element={<FormAttendance />} />
           <Route path="/result" element={<EventAttendanceList />} />
           <Route path="/login" element={<LoginPage />} />
