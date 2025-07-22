@@ -1,4 +1,4 @@
-import { useGetData, usePostData } from "@/actions";
+import { useDeleteData, useGetData, usePostData, usePutData } from "@/actions";
 import {
     Button,
     ButtonRipple,
@@ -17,11 +17,14 @@ import { useFormik } from "formik";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { TbEye, TbPencil, TbTrash } from "react-icons/tb";
+import Swal from "sweetalert2";
 import { useDebounceValue } from 'usehooks-ts';
 import * as Yup from "yup";
 
 interface EventInterface {
+    id: string;
     nama: string;
+    deskripsi: string;
     waktu_mulai: string;
     waktu_selesai: string;
     status: string;
@@ -53,10 +56,14 @@ const EventPage = () => {
     );
 
     const [basicModal, setBasicModal] = useState<boolean>(false);
+    const [isEditMode, setIsEditMode] = useState<boolean>(false);
+    const [selectedEvent, setSelectedEvent] = useState<EventInterface | null>(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [debounceSearch] = useDebounceValue(searchTerm, 500)
 
     const createEvent = usePostData(API_URL_event, true);
+    const updateEvent = usePutData(`${API_URL_event}${selectedEvent?.id}/`, true);
+    const deleteEvent = useDeleteData(API_URL_event, true);
 
     const formik = useFormik({
         initialValues: {
@@ -72,22 +79,71 @@ const EventPage = () => {
             waktu_selesai: Yup.string().required("Required"),
         }),
         onSubmit: (values, { resetForm }) => {
-            createEvent.mutate(values as any, {
-                onSuccess: (res: any) => {
-                    const data = res as { message: string };
-                    resetForm();
-                    showToast(data.message, "success", 3000, true, true);
-                    getEvent.refetch();
-                    setBasicModal(false);
-                },
-                onError: (error) => {
-                    console.error(error);
-                    showToast("An error occurred while submitting the form.", "error", 3000);
-                    resetForm();
-                },
-            });
-        },
+            if (isEditMode && selectedEvent) {
+                updateEvent.mutate(
+                    { id: selectedEvent.id, ...values } as any,
+                    {
+                        onSuccess: (res: any) => {
+                            showToast(res.message, "success", 3000, true, true);
+                            resetForm();
+                            getEvent.refetch();
+                            setBasicModal(false);
+                            setIsEditMode(false);
+                        },
+                        onError: () => {
+                            showToast("Error while updating event.", "error", 3000, true, true);
+                        },
+                    }
+                );
+            } else {
+                createEvent.mutate(values as any, {
+                    onSuccess: (res: any) => {
+                        showToast(res.message, "success", 3000, true, true);
+                        resetForm();
+                        getEvent.refetch();
+                        setBasicModal(false);
+                    },
+                    onError: () => {
+                        showToast("Error while creating event.", "error", 3000, true, true);
+                    },
+                });
+            }
+        }
     });
+
+    const onDelete = (item: EventInterface) => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            iconColor: "#FF0000",
+            showCancelButton: true,
+            confirmButtonText: 'Delete',
+            customClass: {
+                popup: 'custom-popup',
+                title: 'custom-title',
+                icon: 'custom-icon',
+                htmlContainer: 'custom-val',
+                confirmButton: 'custom-delete-button',
+                cancelButton: 'custom-cancel-button',
+            }
+        }).then((result) => {
+            if (result.value) {
+                deleteEvent.mutate((item.id) as any, {
+                    onSuccess: (res) => {
+                        const data = res as { message: string };
+                        showToast(data.message, "success", 3000, true, true);
+                        getEvent.refetch();
+                    },
+                    onError: (error) => {
+                        console.log(error);
+                        const data = error as { message: string };
+                        showToast(data.message, "warning", 3000, true, true);
+                    },
+                });
+            }
+        });
+    };
 
     useEffect(() => {
         setQueryParams((prev) => ({ ...prev, search: debounceSearch, offset: 0 }));
@@ -180,6 +236,17 @@ const EventPage = () => {
                                             <Tooltip tooltip="Edit">
                                                 <ButtonRipple
                                                     stopPropagation
+                                                    onClick={() => {
+                                                        setIsEditMode(true);
+                                                        setSelectedEvent(item);
+                                                        formik.setValues({
+                                                            nama: item.nama || "",
+                                                            deskripsi: item.deskripsi || "",
+                                                            waktu_mulai: item.waktu_mulai || "",
+                                                            waktu_selesai: item.waktu_selesai || "",
+                                                        });
+                                                        setBasicModal(true);
+                                                    }}
                                                     className="p-2 rounded-full transition-[background] hover:bg-white/10"
                                                 >
                                                     <TbPencil className="text-xl text-yellow-500" />
@@ -188,6 +255,7 @@ const EventPage = () => {
                                             <Tooltip tooltip="Hapus">
                                                 <ButtonRipple
                                                     stopPropagation
+                                                    onClick={() => onDelete(item)}
                                                     className="p-2 rounded-full transition-[background] hover:bg-white/10"
                                                 >
                                                     <TbTrash className="text-xl text-red-500" />

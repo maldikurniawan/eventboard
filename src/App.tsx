@@ -1,5 +1,5 @@
 import { Layout, NotFound } from "@/components";
-import { EventAttendanceList, FormAttendance, LoginPage, QRCode } from "@/pages";
+import { AttendanceListPage, EventAttendanceList, FormAttendance, LoginPage, QRCode } from "@/pages";
 import { Fragment } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { menu } from "./constants/menu";
@@ -27,10 +27,11 @@ const App = () => {
                 return <Route key={index} path={item.path} element={item.element} />;
               }
             })}
+            <Route path="/attendance/list" element={<AttendanceListPage />} />
           </Route>
           <Route path="/qrcode" element={<QRCode />} />
           <Route path="/form" element={<FormAttendance />} />
-          <Route path="/attendance" element={<EventAttendanceList />} />
+          <Route path="/result" element={<EventAttendanceList />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
