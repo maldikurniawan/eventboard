@@ -1,5 +1,6 @@
-import { DashboardPage } from "@/pages";
+import { AttendancePage, DashboardPage, EventPage } from "@/pages";
 import type { JSX } from "react";
+import { FaUserCheck } from "react-icons/fa";
 import { MdEvent } from "react-icons/md";
 import {
     PiHouseLine
@@ -33,7 +34,7 @@ export const menu: MenuItem[] = [
     {
         icon: <PiHouseLine />,
         path: "/",
-        name: "chart",
+        name: "dashboard",
         title: "Dashboard",
         element: <DashboardPage />,
         sub: [],
@@ -43,7 +44,15 @@ export const menu: MenuItem[] = [
         path: "/event",
         name: "event",
         title: "Event",
-        element: <div>Event Page</div>,
+        element: <EventPage />,
+        sub: [],
+    },
+    {
+        icon: <FaUserCheck />,
+        path: "/attendance",
+        name: "attendance",
+        title: "Attendance",
+        element: <AttendancePage />,
         sub: [],
     },
 ];

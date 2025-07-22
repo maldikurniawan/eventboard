@@ -2,18 +2,19 @@ import type { ToastOptions } from "react-toastify";
 import { Slide, toast } from "react-toastify";
 
 /**
- * Menampilkan pesan toast dengan tipe tertentu
+ * Menampilkan pesan toast dengan tipe tertentu, mendukung mode gelap
  * @param message - Pesan yang ingin ditampilkan dalam toast.
  * @param type - Jenis toast (info, success, warning, error). Default: 'info'.
  * @param time - Durasi toast dalam milidetik. Default: 3000.
  * @param closeOnClick - Apakah toast ditutup saat diklik. Default: true.
+ * @param darkMode - Apakah toast ditampilkan dalam mode gelap. Default: false.
  */
-
 export const showToast = (
     message: string,
     type: "info" | "success" | "warning" | "error" = "info",
     time: number = 3000,
-    closeOnClick: boolean = true
+    closeOnClick: boolean = true,
+    darkMode: boolean = false
 ): void => {
     const toastConfig: ToastOptions = {
         position: "top-right",
@@ -23,7 +24,7 @@ export const showToast = (
         pauseOnHover: true,
         draggable: false,
         progress: undefined,
-        theme: "light",
+        theme: darkMode ? "dark" : "light",
         transition: Slide,
         style: {
             fontSize: "14px",
@@ -31,8 +32,8 @@ export const showToast = (
             padding: "10px 20px",
             margin: "10px",
             borderRadius: "10px",
-            backgroundColor: "#fff",
-            color: "#333",
+            backgroundColor: darkMode ? "#333333" : "#FFFFFF",
+            color: darkMode ? "#F5F5F5" : "#333333",
         },
     };
 

@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, CSSProperties, MouseEventHandler, ReactNode } from "react";
+import type { ButtonHTMLAttributes, CSSProperties, MouseEventHandler, ReactNode } from "react";
 import useRipple from "use-ripple-hook";
 
 type ButtonRippleProps = ButtonHTMLAttributes<HTMLButtonElement> & {

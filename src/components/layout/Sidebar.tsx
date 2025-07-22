@@ -20,8 +20,8 @@ const Sidebar: React.FC<SidebarProps> = ({ sideOpen, setSideOpen }) => {
 
                 <div
                     ref={ref}
-                    className={`z-50 fixed md:relative my-4 ml-4 flex flex-col bg-[#333333] rounded-xl h-[calc(100vh-2rem)] border-r-2 border-[#1A1A1A] backdrop-blur-xl text-white transition-all duration-300 ease-in-out ${sideOpen
-                        ? "w-[16rem] translate-x-0"
+                    className={`z-50 fixed md:relative my-4 flex flex-col bg-[#333333] rounded-xl h-[calc(100vh-2rem)] border-r-2 border-[#1A1A1A] backdrop-blur-xl text-white transition-all duration-300 ease-in-out ${sideOpen
+                        ? "w-[16rem] ml-4 translate-x-0"
                         : "w-0 translate-x-[-100%]"}`
                     }
                 >

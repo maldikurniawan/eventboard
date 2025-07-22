@@ -65,7 +65,7 @@ const FormAttendance: React.FC = () => {
                                 Form Attendance
                             </Link>
                         </div>
-                        <form onSubmit={formik.handleSubmit} className="space-y-4 text-[#]">
+                        <form onSubmit={formik.handleSubmit} className="space-y-4">
                             <TextField
                                 label="Nama"
                                 id="nama"

@@ -337,7 +337,7 @@ const TextField: React.FC<TextFieldProps> = ({
                                 fontSize: textFieldSize,
                                 ...inputStyle,
                             }}
-                            className={`bg-transparent flex-1 text-black appearance-none outline-none w-full h-full leading-none placeholder:transition-all ${isFocus ? "placeholder:pl-1" : "pl-0"
+                            className={`bg-transparent flex-1 appearance-none outline-none w-full h-full leading-none placeholder:transition-all ${isFocus ? "placeholder:pl-1" : "pl-0"
                                 } ${variants.includes(variant) && !isFocus
                                     ? "placeholder:opacity-0"
                                     : "placeholder:opacity-50"

@@ -11,7 +11,7 @@ const Layout: React.FC = () => {
 
     useEffect(() => {
         if (location.state?.loginSuccess && !toastShown.current) {
-            showToast("Login successful. Welcome back!", "success", 3000);
+            showToast("Login successful. Welcome back!", "success", 3000, true, true);
             toastShown.current = true;
         }
     }, [location.state]);
@@ -26,7 +26,7 @@ const Layout: React.FC = () => {
                 <Sidebar sideOpen={sideOpen} setSideOpen={setSideOpen} />
                 <div className="w-full h-screen flex flex-col relative">
                     <Header sideOpen={sideOpen} setSideOpen={setSideOpen} />
-                    <div className="bg-[#1A1A1A] h-full overflow-y-auto px-4 py-2 text-white scroll-hidden">
+                    <div className="bg-[#1A1A1A] h-full overflow-y-auto px-4 py-1 text-white scroll-hidden">
                         <Outlet />
                     </div>
                     <Footer />
