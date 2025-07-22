@@ -1,19 +1,24 @@
-import { useGetData } from "@/actions";
+import { useGetData, usePostData } from "@/actions";
 import {
     Button,
     ButtonRipple,
+    DateTimePicker,
     Limit,
     Modal,
     Pagination,
     Tables,
+    TextArea,
     TextField,
     Tooltip
 } from "@/components";
 import { API_URL_event } from "@/constants";
+import { showToast } from "@/utils/showToast";
+import { useFormik } from "formik";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { TbEye, TbPencil, TbTrash } from "react-icons/tb";
 import { useDebounceValue } from 'usehooks-ts';
+import * as Yup from "yup";
 
 interface EventInterface {
     nama: string;
@@ -50,6 +55,39 @@ const EventPage = () => {
     const [basicModal, setBasicModal] = useState<boolean>(false);
     const [searchTerm, setSearchTerm] = useState("");
     const [debounceSearch] = useDebounceValue(searchTerm, 500)
+
+    const createEvent = usePostData(API_URL_event, true);
+
+    const formik = useFormik({
+        initialValues: {
+            nama: "",
+            deskripsi: "",
+            waktu_mulai: "",
+            waktu_selesai: "",
+        },
+        validationSchema: Yup.object({
+            nama: Yup.string().required("Required"),
+            deskripsi: Yup.string().required("Required"),
+            waktu_mulai: Yup.string().required("Required"),
+            waktu_selesai: Yup.string().required("Required"),
+        }),
+        onSubmit: (values, { resetForm }) => {
+            createEvent.mutate(values as any, {
+                onSuccess: (res: any) => {
+                    const data = res as { message: string };
+                    resetForm();
+                    showToast(data.message, "success", 3000, true, true);
+                    getEvent.refetch();
+                    setBasicModal(false);
+                },
+                onError: (error) => {
+                    console.error(error);
+                    showToast("An error occurred while submitting the form.", "error", 3000);
+                    resetForm();
+                },
+            });
+        },
+    });
 
     useEffect(() => {
         setQueryParams((prev) => ({ ...prev, search: debounceSearch, offset: 0 }));
@@ -189,17 +227,54 @@ const EventPage = () => {
             <Modal show={basicModal} setShow={setBasicModal} width="sm" height="auto">
                 <div className="text-lg font-normal p-5">
                     <div className="mb-3">Tambah Event</div>
-                    <div className="text-sm mb-3">
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aspernatur
-                        quae officia doloribus in alias laudantium odio delectus nostrum
-                        iure! Ipsa eos harum tenetur distinctio! Eligendi ab dignissimos
-                        laboriosam ipsa velit.
-                    </div>
-                    <div className="text-sm flex justify-end">
-                        <Button onClick={() => setBasicModal(false)} color="lightGray">
-                            Close
-                        </Button>
-                    </div>
+                    <form onSubmit={formik.handleSubmit} className="space-y-3">
+                        <TextField
+                            label="Nama"
+                            id="nama"
+                            name="nama"
+                            type="text"
+                            placeholder="Nama"
+                            variant="outline"
+                            value={formik.values.nama}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            error={formik.touched.nama && formik.errors.nama}
+                        />
+                        <TextArea
+                            label="Deskripsi"
+                            id="deskripsi"
+                            name="deskripsi"
+                            placeholder="Deskripsi"
+                            variant="outline"
+                            value={formik.values.deskripsi}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            error={formik.touched.deskripsi && formik.errors.deskripsi}
+                        />
+                        <DateTimePicker
+                            label="Waktu Mulai"
+                            placeholder="Waktu Mulai"
+                            value={formik.values.waktu_mulai}
+                            setValue={(val) => formik.setFieldValue("waktu_mulai", val)}
+                            error={formik.errors.waktu_mulai}
+                            touched={formik.touched.waktu_mulai}
+                            required
+                        />
+                        <DateTimePicker
+                            label="Waktu Selesai"
+                            placeholder="Waktu Selesai"
+                            value={formik.values.waktu_selesai}
+                            setValue={(val) => formik.setFieldValue("waktu_selesai", val)}
+                            error={formik.errors.waktu_selesai}
+                            touched={formik.touched.waktu_selesai}
+                            required
+                        />
+                        <div className="text-sm flex justify-end">
+                            <Button type="submit" color="lightGray" disabled={createEvent.isPending} className="cursor-pointer">
+                                Submit
+                            </Button>
+                        </div>
+                    </form>
                 </div>
             </Modal>
         </>

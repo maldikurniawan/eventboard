@@ -269,7 +269,7 @@ const TextField: React.FC<TextFieldProps> = ({
                             style={{ ...labelStyle }}
                             className={`absolute pointer-events-none transition-[top,font,padding,margin] leading-none whitespace-nowrap ${(isFocus && variant === "outline") ||
                                 (variant === "outline" && value)
-                                ? "bg-white backdrop-blur px-1 -ml-1"
+                                ? "bg-[#333333] backdrop-blur px-1 -ml-1"
                                 : ""
                                 }`}
                         >
