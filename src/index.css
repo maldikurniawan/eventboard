@@ -70,7 +70,8 @@
 }
 
 .custom-delete-button:hover {
-    background-color: #CC0000; /* Lebih gelap dari merah awal */
+    background-color: #CC0000;
+    /* Lebih gelap dari merah awal */
 }
 
 .custom-cancel-button {
@@ -81,7 +82,8 @@
 }
 
 .custom-cancel-button:hover {
-    background-color: #1F1F1F; /* Lebih gelap dari merah awal */
+    background-color: #1F1F1F;
+    /* Lebih gelap dari merah awal */
 }
 
 .custom-icon {
@@ -89,4 +91,15 @@
     padding-left: 6px;
     padding-top: 4px;
     padding-bottom: 4px;
+}
+
+/* Hide Autofill Background */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 9999s ease-in-out 0s;
+    -webkit-text-fill-color: white !important;
+    caret-color: white;
+    box-shadow: 0 0 0px 1000px transparent inset !important;
 }
