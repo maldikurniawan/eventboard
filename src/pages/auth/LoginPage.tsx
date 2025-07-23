@@ -1,11 +1,11 @@
-import { Button, Circle, TextField } from "@/components";
+import { Button, TextField } from "@/components";
 import { API_URL_login } from "@/constants";
 import { showToast } from "@/utils/showToast";
 import axios from "axios";
 import { useFormik } from "formik";
 import { useState } from "react";
 import { TbEye, TbEyeOff, TbLoader2 } from "react-icons/tb";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
 const LoginPage: React.FC = () => {
@@ -37,7 +37,7 @@ const LoginPage: React.FC = () => {
 
                 navigate("/", { state: { loginSuccess: true } });
             } catch (error: any) {
-                showToast("No active account found with the given credentials", "error", 3000);
+                showToast("No active account found with the given credentials", "error", 3000, true, true);
             } finally {
                 setLoading(false);
             }
@@ -46,15 +46,14 @@ const LoginPage: React.FC = () => {
     });
 
     return (
-        <div className="relative overflow-hidden">
-            <Circle />
+        <div className="relative overflow-hidden bg-[#1A1A1A]">
             <div className="relative w-screen h-screen overflow-hidden flex font-light">
                 <div className="flex w-full items-center justify-center p-10">
-                    <div className="w-full md:w-96 h-fit p-10 bg-white rounded-xl backdrop-blur-lg shadow-xl">
+                    <div className="w-full md:w-96 h-fit p-10 bg-[#333333] text-white rounded-xl backdrop-blur-lg shadow-xl">
                         <div className="flex items-center mb-4">
-                            <Link to={"/"} className="text-xl font-bold text-center">
+                            <div className="text-xl font-bold text-center">
                                 Login
-                            </Link>
+                            </div>
                         </div>
                         <form onSubmit={formik.handleSubmit} className="space-y-4">
                             <TextField
@@ -63,7 +62,6 @@ const LoginPage: React.FC = () => {
                                 name="username"
                                 type="text"
                                 placeholder="Username"
-                                color="#000000"
                                 variant="outline"
                                 value={formik.values.username}
                                 onChange={formik.handleChange}
@@ -77,7 +75,6 @@ const LoginPage: React.FC = () => {
                                     name="password"
                                     type={isShow ? "text" : "password"}
                                     placeholder="Password"
-                                    color="#000000"
                                     variant="outline"
                                     value={formik.values.password}
                                     onChange={formik.handleChange}
@@ -97,9 +94,9 @@ const LoginPage: React.FC = () => {
                                     type="submit"
                                     disabled={loading}
                                     className="w-full"
-                                    color="#000000"
+                                    color="lightGray"
                                 >
-                                    <div className="text-white">
+                                    <div className="text-black">
                                         {loading ? (
                                             <TbLoader2 size={20} className="animate-spin mx-auto" />
                                         ) : (

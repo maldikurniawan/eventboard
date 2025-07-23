@@ -114,6 +114,7 @@ const AttendanceListPage = () => {
                         <Tables.Header>No. HP</Tables.Header>
                         <Tables.Header>Email</Tables.Header>
                         <Tables.Header>Nama Perusahaan</Tables.Header>
+                        <Tables.Header>IP Address</Tables.Header>
                         <Tables.Header center>Action</Tables.Header>
                     </Tables.Row>
                 </Tables.Head>
@@ -129,6 +130,7 @@ const AttendanceListPage = () => {
                                 <Tables.Data>{item.nohp}</Tables.Data>
                                 <Tables.Data>{item.email}</Tables.Data>
                                 <Tables.Data>{item.nama_perusahaan}</Tables.Data>
+                                <Tables.Data>-</Tables.Data>
                                 <Tables.Data center>
                                     <div className="flex items-center justify-center">
                                         <Tooltip tooltip="Lihat">
@@ -145,7 +147,7 @@ const AttendanceListPage = () => {
                         ))
                     ) : (
                         <Tables.Row>
-                            <Tables.Data colspan={5} center>No Data</Tables.Data>
+                            <Tables.Data colspan={6} center>No Data</Tables.Data>
                         </Tables.Row>
                     )}
 

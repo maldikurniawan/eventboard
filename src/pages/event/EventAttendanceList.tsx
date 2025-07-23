@@ -2,7 +2,6 @@ import { useGetData } from "@/actions";
 import {
     Button,
     Card,
-    Circle,
     Limit,
     Pagination,
     Tables,
@@ -10,7 +9,8 @@ import {
 } from "@/components";
 import { API_URL_event } from "@/constants";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { TbLoader } from "react-icons/tb";
+import { Link, Navigate, useParams } from "react-router-dom";
 import { useDebounceValue } from 'usehooks-ts';
 
 interface EventAttendanceInterface {
@@ -30,9 +30,11 @@ const EventAttendanceList = () => {
         sortOrder: "",
     });
 
+    const { slug } = useParams();
+
     const getEventAttendance = useGetData(
-        API_URL_event,
-        ["event", queryParams],
+        `${API_URL_event}${slug}/attendance/`,
+        [`event-${slug}`, queryParams],
         true,
         {
             limit: queryParams.limit.toString(),
@@ -44,6 +46,9 @@ const EventAttendanceList = () => {
             search: queryParams.search,
         }
     );
+
+    const getEvent = useGetData(API_URL_event, ["event"], true);
+    const dataEvent = getEvent.data?.results?.find((item: any) => item.slug === slug);
 
     const [searchTerm, setSearchTerm] = useState("");
     const [debounceSearch] = useDebounceValue(searchTerm, 500)
@@ -70,10 +75,22 @@ const EventAttendanceList = () => {
     const totalEntries = getEventAttendance?.data?.count || 0;
     const currentPage = Math.floor(queryParams.offset / queryParams.limit) + 1;
 
+    if (getEvent.isLoading) {
+        return <div className="relative h-screen flex justify-center items-center">
+            <div className='text-center font-bold text-white'>
+                <TbLoader size={20} className="animate-spin" />
+            </div>
+        </div>
+    }
+
+    if (!dataEvent) {
+        return <Navigate to="/*" />;
+    }
+
+    // console.log(dataEvent)
 
     return (
-        <div className="min-h-screen overflow-x-hidden p-10">
-            <Circle />
+        <div className="min-h-screen overflow-x-hidden p-10 bg-[#1A1A1A] text-white">
             <Card>
                 <div className="p-10">
                     {/* Control Top */}
@@ -92,7 +109,7 @@ const EventAttendanceList = () => {
                             />
                         </div>
                         <Button
-                            color="#000000"
+                            color="#BEBEBE"
                             variant="outline"
                             className="cursor-pointer"
                             onClick={getEventAttendance.refetch}

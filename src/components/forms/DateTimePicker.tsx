@@ -11,7 +11,6 @@ interface DateTimePickerProps {
     value: string | Date | null;
     setValue: (val: any) => void;
     error?: string;
-    touched?: boolean;
     required?: boolean;
 }
 
@@ -21,7 +20,6 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
     value,
     setValue,
     error,
-    touched,
     required,
 }) => {
     const [open, setOpen] = useState(false);
@@ -61,10 +59,6 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
                         input={false}
                     />
                 </div>
-            )}
-
-            {touched && error && (
-                <div className="text-red-500 mt-1 text-sm">{error}</div>
             )}
         </div>
     );

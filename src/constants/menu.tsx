@@ -3,7 +3,6 @@ import type { JSX } from "react";
 import { FaUserCheck } from "react-icons/fa";
 import { MdEvent } from "react-icons/md";
 import {
-    PiBarcode,
     PiHouseLine
 } from "react-icons/pi";
 
@@ -54,14 +53,6 @@ export const menu: MenuItem[] = [
         name: "attendance",
         title: "Attendance",
         element: <AttendancePage />,
-        sub: [],
-    },
-    {
-        icon: <PiBarcode />,
-        path: "/barcode",
-        name: "barcode",
-        title: "Barcode",
-        element: <div>Barcode Page</div>,
         sub: [],
     },
 ];

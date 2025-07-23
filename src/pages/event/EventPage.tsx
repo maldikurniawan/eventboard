@@ -24,10 +24,15 @@ import * as Yup from "yup";
 interface EventInterface {
     id: string;
     nama: string;
+    slug: string;
     deskripsi: string;
     waktu_mulai: string;
     waktu_selesai: string;
     status: string;
+    barcode: {
+        image_url: string;
+        barcode_value: string;
+    };
 }
 
 
@@ -56,6 +61,7 @@ const EventPage = () => {
     );
 
     const [basicModal, setBasicModal] = useState<boolean>(false);
+    const [qrcodeModal, setQRCodeModal] = useState<boolean>(false);
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
     const [selectedEvent, setSelectedEvent] = useState<EventInterface | null>(null);
     const [searchTerm, setSearchTerm] = useState("");
@@ -164,6 +170,26 @@ const EventPage = () => {
         }));
     };
 
+    const downloadQRCode = async () => {
+        if (!selectedEvent?.barcode?.image_url || !selectedEvent?.slug) return;
+
+        try {
+            const response = await fetch(selectedEvent.barcode.image_url);
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = `${selectedEvent.slug}-qr.png`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error("Gagal mengunduh gambar QR Code:", error);
+        }
+    };
+
     const totalEntries = getEvent?.data?.count || 0;
     const currentPage = Math.floor(queryParams.offset / queryParams.limit) + 1;
 
@@ -225,9 +251,13 @@ const EventPage = () => {
                                     </Tables.Data>
                                     <Tables.Data center>
                                         <div className="flex items-center justify-center">
-                                            <Tooltip tooltip="Lihat">
+                                            <Tooltip tooltip="Lihat QR Code">
                                                 <ButtonRipple
                                                     stopPropagation
+                                                    onClick={() => {
+                                                        setSelectedEvent(item);
+                                                        setQRCodeModal(true);
+                                                    }}
                                                     className="p-2 rounded-full transition-[background] hover:bg-white/10"
                                                 >
                                                     <TbEye className="text-xl text-blue-500" />
@@ -325,8 +355,6 @@ const EventPage = () => {
                             value={formik.values.waktu_mulai}
                             setValue={(val) => formik.setFieldValue("waktu_mulai", val)}
                             error={formik.errors.waktu_mulai}
-                            touched={formik.touched.waktu_mulai}
-                            required
                         />
                         <DateTimePicker
                             label="Waktu Selesai"
@@ -334,8 +362,6 @@ const EventPage = () => {
                             value={formik.values.waktu_selesai}
                             setValue={(val) => formik.setFieldValue("waktu_selesai", val)}
                             error={formik.errors.waktu_selesai}
-                            touched={formik.touched.waktu_selesai}
-                            required
                         />
                         <div className="text-sm flex justify-end">
                             <Button type="submit" color="lightGray" disabled={createEvent.isPending} className="cursor-pointer">
@@ -343,6 +369,25 @@ const EventPage = () => {
                             </Button>
                         </div>
                     </form>
+                </div>
+            </Modal>
+            <Modal show={qrcodeModal} setShow={setQRCodeModal} width="xs" height="auto">
+                <div className="text-lg font-normal p-5 flex flex-col items-center justify-center">
+                    <div className="mb-3 text-center capitalize">{selectedEvent?.nama}</div>
+                    {selectedEvent?.barcode?.image_url ? (
+                        <>
+                            <img
+                                src={selectedEvent.barcode.image_url}
+                                alt="QR Code"
+                                className="mx-auto w-48 h-48 object-contain"
+                            />
+                            <Button color="lightGray" className="cursor-pointer mt-3 w-48" onClick={downloadQRCode}>
+                                Simpan Gambar
+                            </Button>
+                        </>
+                    ) : (
+                        <p className="text-sm text-[#BEBEBE]">QR Code tidak tersedia</p>
+                    )}
                 </div>
             </Modal>
         </>

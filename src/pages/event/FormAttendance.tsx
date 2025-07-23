@@ -1,17 +1,21 @@
-import { usePostData } from "@/actions";
-import { Button, Circle, TextField } from "@/components";
+import { useGetData, usePostData } from "@/actions";
+import { Button, TextField } from "@/components";
 import { API_URL_event } from "@/constants";
 import { showToast } from "@/utils/showToast";
 import { useFormik } from "formik";
 import { useState } from "react";
-import { TbLoader2 } from "react-icons/tb";
-import { Link, useNavigate } from "react-router-dom";
+import { TbLoader, TbLoader2 } from "react-icons/tb";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import * as Yup from "yup";
 
 const FormAttendance: React.FC = () => {
-    const [loading, setLoading] = useState<boolean>(false);
-    const createEventAttendance = usePostData(API_URL_event, true);
+    const { slug } = useParams();
     const navigate = useNavigate();
+    const [loading, setLoading] = useState<boolean>(false);
+
+    const getEvent = useGetData(API_URL_event, ["event"], true);
+    const dataEvent = getEvent.data?.results?.find((item: any) => item.slug === slug);
+    const createEventAttendance = usePostData(`${API_URL_event}${dataEvent?.slug}/attendance/`, true);
 
     const formik = useFormik({
         initialValues: {
@@ -41,12 +45,12 @@ const FormAttendance: React.FC = () => {
                     const data = res as { message: string };
                     resetForm();
                     setLoading(false);
-                    navigate("/attendance");
-                    showToast(data.message, "success", 3000);
+                    navigate("/result/" + dataEvent?.slug);
+                    showToast(data.message, "success", 3000, true, true);
                 },
                 onError: (error) => {
                     console.error(error);
-                    showToast("An error occurred while submitting the form.", "error", 3000);
+                    showToast("An error occurred while submitting the form.", "error", 3000, true, true);
                     resetForm();
                     setLoading(false);
                 },
@@ -54,16 +58,29 @@ const FormAttendance: React.FC = () => {
         },
     });
 
+    if (getEvent.isLoading) {
+        return <div className="relative h-screen flex justify-center items-center">
+            <div className='text-center font-bold text-white'>
+                <TbLoader size={20} className="animate-spin" />
+            </div>
+        </div>
+    }
+
+    if (!dataEvent) {
+        return <Navigate to="/*" />;
+    }
+
+    // console.log(dataEvent);
+
     return (
-        <div className="relative overflow-hidden">
-            <Circle />
-            <div className="relative w-screen h-screen overflow-hidden flex font-light">
+        <div className="relative overflow-hidden bg-[#1A1A1A]">
+            <div className="relative w-screen h-screen overflow-hidden flex text-white">
                 <div className="flex w-full items-center justify-center p-10">
-                    <div className="w-full md:w-96 h-fit p-10 bg-white rounded-xl backdrop-blur-lg shadow-xl">
+                    <div className="w-full md:w-96 h-fit p-10 bg-[#333333] rounded-xl backdrop-blur-lg shadow-xl">
                         <div className="flex items-center mb-4">
-                            <Link to={"/attendance"} className="text-xl font-bold text-center">
+                            <div className="text-xl font-bold">
                                 Form Attendance
-                            </Link>
+                            </div>
                         </div>
                         <form onSubmit={formik.handleSubmit} className="space-y-4">
                             <TextField
@@ -72,7 +89,6 @@ const FormAttendance: React.FC = () => {
                                 name="nama"
                                 type="text"
                                 placeholder="Nama"
-                                color="#000000"
                                 variant="outline"
                                 value={formik.values.nama}
                                 onChange={formik.handleChange}
@@ -85,7 +101,6 @@ const FormAttendance: React.FC = () => {
                                 name="nohp"
                                 type="text"
                                 placeholder="No. HP"
-                                color="#000000"
                                 variant="outline"
                                 value={formik.values.nohp}
                                 onChange={formik.handleChange}
@@ -98,7 +113,6 @@ const FormAttendance: React.FC = () => {
                                 name="email"
                                 type="text"
                                 placeholder="Email"
-                                color="#000000"
                                 variant="outline"
                                 value={formik.values.email}
                                 onChange={formik.handleChange}
@@ -111,7 +125,6 @@ const FormAttendance: React.FC = () => {
                                 name="nama_perusahaan"
                                 type="text"
                                 placeholder="Nama Perusahaan"
-                                color="#000000"
                                 variant="outline"
                                 value={formik.values.nama_perusahaan}
                                 onChange={formik.handleChange}
@@ -123,9 +136,9 @@ const FormAttendance: React.FC = () => {
                                     type="submit"
                                     disabled={loading}
                                     className="w-full cursor-pointer"
-                                    color="#000000"
+                                    color="lightGray"
                                 >
-                                    <div className="text-white">
+                                    <div className="text-black">
                                         {loading ? (
                                             <TbLoader2 size={20} className="animate-spin mx-auto" />
                                         ) : (

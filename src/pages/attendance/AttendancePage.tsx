@@ -16,6 +16,7 @@ import { useDebounceValue } from 'usehooks-ts';
 interface EventInterface {
     id: string;
     nama: string;
+    slug: string;
     deskripsi: string;
     waktu_mulai: string;
     waktu_selesai: string;
@@ -50,6 +51,33 @@ const AttendancePage = () => {
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState("");
     const [debounceSearch] = useDebounceValue(searchTerm, 500)
+    const [attendanceCounts, setAttendanceCounts] = useState<Record<string, number>>({});
+
+    useEffect(() => {
+        const eventList = getEvent?.data?.results;
+        if (!eventList || eventList.length === 0) return;
+
+        const fetchAttendanceSequentially = async () => {
+            for (const event of eventList) {
+                try {
+                    const res = await fetch(`${API_URL_event}${event.slug}/attendance/`);
+                    const data = await res.json();
+                    const count = data?.results?.length ?? 0;
+
+                    // Gunakan updater function agar tidak overwrite state sebelumnya
+                    setAttendanceCounts((prev) => ({
+                        ...prev,
+                        [event.slug]: count,
+                    }));
+                } catch (error) {
+                    console.error(`Gagal fetch attendance untuk ${event.slug}`, error);
+                }
+            }
+        };
+
+        fetchAttendanceSequentially();
+    }, [getEvent?.data?.results]);
+
 
     useEffect(() => {
         setQueryParams((prev) => ({ ...prev, search: debounceSearch, offset: 0 }));
@@ -73,6 +101,7 @@ const AttendancePage = () => {
     const totalEntries = getEvent?.data?.count || 0;
     const currentPage = Math.floor(queryParams.offset / queryParams.limit) + 1;
 
+    // console.log(attendanceCounts)
 
     return (
         <div className="p-4 bg-[#333333] rounded-xl">
@@ -116,10 +145,10 @@ const AttendancePage = () => {
                                 <h2 className="text-lg font-semibold capitalize">{item.nama}</h2>
                                 <span
                                     className={`inline-block px-2 py-1 capitalize text-xs rounded-full font-medium mb-2 ${item.status === "berlangsung"
-                                        ? "bg-green-100 text-green-800"
+                                        ? "bg-green-600 text-white"
                                         : item.status === "belum dimulai"
-                                            ? "bg-yellow-100 text-yellow-800"
-                                            : "bg-gray-200 text-gray-700"
+                                            ? "bg-yellow-600 text-white"
+                                            : "bg-red-600 text-white"
                                         }`}
                                 >
                                     {item.status}
@@ -134,7 +163,7 @@ const AttendancePage = () => {
                             </div>
                             <div className="flex items-center gap-2 text-4xl font-black">
                                 <FaUserCheck />
-                                <p>0</p>
+                                <p>{attendanceCounts[item.slug] ?? 0}</p>
                             </div>
                         </motion.div>
                     ))
@@ -142,7 +171,6 @@ const AttendancePage = () => {
                     <div>No Data</div>
                 )}
             </div>
-
 
             {/* Control Bottom */}
             <div className="mt-4 flex flex-col sm:flex-row justify-center sm:justify-between items-center gap-4">
