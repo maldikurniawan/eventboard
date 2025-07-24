@@ -3,6 +3,7 @@ import Badge from "./atoms/Badge"
 import Button from "./atoms/Button"
 import ButtonRipple from "./atoms/ButtonRipple"
 import Card from "./atoms/Card"
+import Charts from "./atoms/Charts"
 import Circle from "./atoms/Circle"
 import Limit from "./atoms/Limit"
 import List from "./atoms/List"
@@ -25,6 +26,6 @@ import Sidebar from "./layout/Sidebar"
 
 export {
     Avatar, Badge, Button,
-    ButtonRipple, Card, Circle, DateTimePicker, Footer, Header, Layout, Limit, List, Loading, Menu, Modal, NotFound, Pagination, Popover, Select, Sidebar, Tables, TextArea, TextField, Tooltip
+    ButtonRipple, Card, Charts, Circle, DateTimePicker, Footer, Header, Layout, Limit, List, Loading, Menu, Modal, NotFound, Pagination, Popover, Select, Sidebar, Tables, TextArea, TextField, Tooltip
 }
 

@@ -47,6 +47,7 @@ const LoginPage: React.FC = () => {
 
     return (
         <div className="relative overflow-hidden bg-[#1A1A1A]">
+            <img src="/assets/images/pattern_dark_auth.png" alt="bg-city" className="absolute z-0 w-full h-full object-cover bottom-0"/>
             <div className="relative w-screen h-screen overflow-hidden flex font-light">
                 <div className="flex w-full items-center justify-center p-10">
                     <div className="w-full md:w-96 h-fit p-10 bg-[#333333] text-white rounded-xl backdrop-blur-lg shadow-xl">

@@ -25,6 +25,13 @@ const Sidebar: React.FC<SidebarProps> = ({ sideOpen, setSideOpen }) => {
                         : "w-0 translate-x-[-100%]"}`
                     }
                 >
+
+                    <img
+                        src="/assets/images/pattern_dark_auth.png"
+                        className="absolute inset-0 w-full h-full object-cover object-center opacity-10 -z-10 pointer-events-none "
+                        alt="bg-sidebar"
+                    />
+
                     <div className={`w-[90%] items-center cursor-pointer gap-1 mx-auto flex border-b-2 leading-[54px] text-left border-[#BEBEBE] ${sideOpen ? "opacity-100" : "opacity-0 pointer-events-none"} transition-opacity duration-300 ease-in-out`}>
                         <div className="text-xl font-black bg-[#1A1A1A] rounded-full px-2">
                             E

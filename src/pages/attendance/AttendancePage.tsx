@@ -62,7 +62,7 @@ const AttendancePage = () => {
                 try {
                     const res = await fetch(`${API_URL_event}${event.slug}/attendance/`);
                     const data = await res.json();
-                    const count = data?.results?.length ?? 0;
+                    const count = data?.count ?? 0;
 
                     // Gunakan updater function agar tidak overwrite state sebelumnya
                     setAttendanceCounts((prev) => ({

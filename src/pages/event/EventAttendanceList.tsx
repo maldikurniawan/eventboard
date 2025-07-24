@@ -1,7 +1,6 @@
 import { useGetData } from "@/actions";
 import {
     Button,
-    Card,
     Limit,
     Pagination,
     Tables,
@@ -10,7 +9,7 @@ import {
 import { API_URL_event } from "@/constants";
 import { useEffect, useState } from "react";
 import { TbLoader } from "react-icons/tb";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import { useDebounceValue } from 'usehooks-ts';
 
 interface EventAttendanceInterface {
@@ -90,86 +89,88 @@ const EventAttendanceList = () => {
     // console.log(dataEvent)
 
     return (
-        <div className="min-h-screen overflow-x-hidden p-10 bg-[#1A1A1A] text-white">
-            <Card>
-                <div className="p-10">
-                    {/* Control Top */}
-                    <div className="flex items-center mb-4">
-                        <Link to={"/form"} className="text-xl font-bold text-center">
-                            Event Attendance List
-                        </Link>
-                    </div>
-                    <div className="mb-4 flex flex-col sm:flex-row justify-center sm:justify-between items-center gap-4">
-                        <div className="w-full sm:w-60">
-                            <TextField
-                                type="text"
-                                placeholder="Search"
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                            />
+        <div className="relative overflow-hidden bg-[#1A1A1A]">
+            <img src="/assets/images/pattern_dark_auth.png" alt="bg-city" className="absolute z-0 w-full h-full object-cover bottom-0" />
+            <div className="relative min-h-screen overflow-hidden flex text-white">
+                <div className="flex w-full items-center justify-center p-4 md:p-10">
+                    <div className="w-full h-fit p-4 md:p-10 bg-[#333333] rounded-xl backdrop-blur-lg shadow-xl">
+                        <div className="flex items-center mb-4">
+                            <div className="text-xl font-bold">
+                                Form Attendance
+                            </div>
                         </div>
-                        <Button
-                            color="#BEBEBE"
-                            variant="outline"
-                            className="cursor-pointer"
-                            onClick={getEventAttendance.refetch}
-                        >
-                            Refresh
-                        </Button>
-                    </div>
+                        <div className="mb-4 flex flex-col sm:flex-row justify-center sm:justify-between items-center gap-4">
+                            <div className="w-full sm:w-60">
+                                <TextField
+                                    type="text"
+                                    placeholder="Search"
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                />
+                            </div>
+                            <Button
+                                color="#BEBEBE"
+                                variant="outline"
+                                className="cursor-pointer w-full sm:w-auto"
+                                onClick={getEventAttendance.refetch}
+                            >
+                                Refresh
+                            </Button>
+                        </div>
 
-                    {/* Tables */}
-                    <Tables>
-                        <Tables.Head>
-                            <Tables.Row>
-                                <Tables.Header>Nama</Tables.Header>
-                                <Tables.Header>No. HP</Tables.Header>
-                                <Tables.Header>Email</Tables.Header>
-                                <Tables.Header>Nama Perusahaan</Tables.Header>
-                            </Tables.Row>
-                        </Tables.Head>
-                        <Tables.Body>
-                            {getEventAttendance?.data?.results?.length > 0 ? (
-                                getEventAttendance.data.results.map((item: EventAttendanceInterface, itemIdx: number) => (
-                                    <Tables.Row key={itemIdx}>
-                                        <Tables.Data>
-                                            <div className="capitalize">
-                                                {item.nama}
-                                            </div>
-                                        </Tables.Data>
-                                        <Tables.Data>{item.nohp}</Tables.Data>
-                                        <Tables.Data>{item.email}</Tables.Data>
-                                        <Tables.Data>{item.nama_perusahaan}</Tables.Data>
-                                    </Tables.Row>
-                                ))
-                            ) : (
+                        {/* Tables */}
+                        <Tables>
+                            <Tables.Head>
                                 <Tables.Row>
-                                    <Tables.Data colspan={4} center>No Data</Tables.Data>
+                                    <Tables.Header>Nama</Tables.Header>
+                                    <Tables.Header>No. HP</Tables.Header>
+                                    <Tables.Header>Email</Tables.Header>
+                                    <Tables.Header>Nama Perusahaan</Tables.Header>
                                 </Tables.Row>
-                            )}
+                            </Tables.Head>
+                            <Tables.Body>
+                                {getEventAttendance?.data?.results?.length > 0 ? (
+                                    getEventAttendance.data.results.map((item: EventAttendanceInterface, itemIdx: number) => (
+                                        <Tables.Row key={itemIdx}>
+                                            <Tables.Data>
+                                                <div className="capitalize">
+                                                    {item.nama}
+                                                </div>
+                                            </Tables.Data>
+                                            <Tables.Data>{item.nohp}</Tables.Data>
+                                            <Tables.Data>{item.email}</Tables.Data>
+                                            <Tables.Data>{item.nama_perusahaan}</Tables.Data>
+                                        </Tables.Row>
+                                    ))
+                                ) : (
+                                    <Tables.Row>
+                                        <Tables.Data colspan={4} center>No Data</Tables.Data>
+                                    </Tables.Row>
+                                )}
 
-                        </Tables.Body>
-                    </Tables>
+                            </Tables.Body>
+                        </Tables>
 
-                    {/* Control Bottom */}
-                    <div className="mt-4 flex flex-col sm:flex-row justify-center sm:justify-between items-center gap-4">
-                        <div className="flex gap-2 items-baseline text-sm">
-                            <Limit
-                                limit={queryParams.limit}
-                                setLimit={handleSelect}
+                        {/* Control Bottom */}
+                        <div className="mt-4 flex flex-col sm:flex-row justify-center sm:justify-between items-center gap-4">
+                            <div className="flex gap-2 items-baseline text-sm">
+                                <Limit
+                                    limit={queryParams.limit}
+                                    setLimit={handleSelect}
+                                />
+                                {totalEntries} entries
+                            </div>
+
+                            <Pagination
+                                totalCount={totalEntries}
+                                onPageChange={handlePageClick}
+                                currentPage={currentPage}
+                                pageSize={queryParams.limit}
                             />
-                            {totalEntries} entries
                         </div>
-
-                        <Pagination
-                            totalCount={totalEntries}
-                            onPageChange={handlePageClick}
-                            currentPage={currentPage}
-                            pageSize={queryParams.limit}
-                        />
                     </div>
                 </div>
-            </Card>
+            </div>
         </div>
     );
 };

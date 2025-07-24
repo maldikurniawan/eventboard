@@ -10,6 +10,7 @@ import {
     Tooltip
 } from "@/components";
 import { API_URL_event } from "@/constants";
+import { showToast } from "@/utils/showToast";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { TbEye } from "react-icons/tb";
@@ -30,6 +31,7 @@ const AttendanceListPage = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [debounceSearch] = useDebounceValue(searchTerm, 500)
     const [basicModal, setBasicModal] = useState<boolean>(false);
+    const [loading, setLoading] = useState(false);
     const [selectedData, setSelectedData] = useState<any>(null);
     const [ipInfo, setIPInfo] = useState<any>(null);
     const { slug } = location.state;
@@ -80,6 +82,31 @@ const AttendanceListPage = () => {
         fetchIPInfo();
     }, [selectedData]);
 
+    const handleDownload = async () => {
+        setLoading(true);
+        try {
+            const response = await axios.get(
+                `${API_URL_event}${slug}/attendance/export-excel/`,
+                {
+                    responseType: "blob",
+                }
+            );
+
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", `attendance-${slug}.xlsx`);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        } catch (error) {
+            console.error("Gagal download file:", error);
+            showToast("Error while downloading file.", "error", 3000, true, true);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
         setQueryParams((prev) => ({ ...prev, search: debounceSearch, offset: 0 }));
     }, [debounceSearch])
@@ -125,14 +152,25 @@ const AttendanceListPage = () => {
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
-                    <Button
-                        color="#BEBEBE"
-                        variant="outline"
-                        className="cursor-pointer"
-                        onClick={() => getEvent.refetch()}
-                    >
-                        Refresh
-                    </Button>
+                    <div className="flex gap-2 items-center">
+                        <Button
+                            color="#BEBEBE"
+                            variant="outline"
+                            className="cursor-pointer"
+                            onClick={() => getEvent.refetch()}
+                        >
+                            Refresh
+                        </Button>
+                        <Button
+                            color="#BEBEBE"
+                            variant="outline"
+                            className="cursor-pointer"
+                            onClick={handleDownload}
+                            disabled={loading}
+                        >
+                            Export to Excel
+                        </Button>
+                    </div>
                 </div>
 
                 {/* Tables */}
